@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Nurdudle</title>
+<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script type="text/javascript">
+function clickType(item){
+	let type = item.innerText
+	const Active = document.querySelectorAll(".selected");
+	Active.forEach((list) => {
+		list.classList.remove("selected");  //이전에 seleted 였던 클래스지우기
+		list.style.display = "none"; //다시 안보이게 설정 
+	});
+	clicked = document.getElementById(type+"Table")  
+	clicked.classList.add("selected");  
+	clicked.style.display = "block";  
+};
+
+</script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+    *{
+    font-family: 'Nanum Gothic', sans-serif;
+    }
+
+/* Navbar */
+a.nav-link {
+	font-size: 30px;
+	margin: 0px 20px 0px 20px;
+}
+
+div#navbarNav {
+	margin-left: 60px;
+}
+
+/* sidebar */
+nav.sidebar {
+	float: left;
+	font-size: 30px;
+	margin: 30px 170px 0px 100px;
+}
+
+a.side-item {
+	text-decoration: none;
+}
+
+ul.side-ul {
+	list-style: none;
+}
+
+li.side-item {
+	padding: 10px;
+}
+
+/* Chart */
+div.chart-area {
+	text-align: center;
+	margin: 70px 0px 100px 0px;
+}
+
+canvas.chart {
+	margin: 30px;
+}
+
+table.chartTable {
+	display: none;
+	margin-left: 100px;
+	text-align: left;
+	font-size: 25px;
+}
+
+table.selected {
+	display: block;
+}
+
+h2 {
+	font-weight: bold;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 100px;">
+  <a class="navbar-brand" style="margin-left: 20px;" href="/main"><img src="/static/images/nurdudle3.png" width="320"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/main">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/imageinput">🔍나의두피유형찾기</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/survey">설문참여하기</a>
+      <li class="nav-item active">
+        <a class="nav-link" href="/statistics">통계페이지<span class="sr-only">(current)</span></a>
+      <li class="nav-item">
+        <a class="nav-link" href="/healthInform">건강정보</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- sidebar -->
+<nav class="sidebar">
+<label for="expand-menu">👉 유형선택</label>
+<ul class="side-ul">
+	<li class="side-item"><a href="#" class="side-item" onclick="clickType(this);">전체</a></li>
+    <li class="side-item"><a href="#" class="side-item" onclick="clickType(this);">양호</a></li>
+    <li class="side-item"><a href="#" class="side-item" onclick="clickType(this);">건성</a></li>
+    <li class="side-item"><a href="#" class="side-item" onclick="clickType(this);">지성</a></li>
+    <li class="side-item"><a href="#" class="side-item" onclick="clickType(this);">민감성</a></li>
+    <li class="side-item"><a href="#" class="side-item" onclick="clickType(this);">지루성</a></li>
+    <li class="side-item"><a href="#" class="side-item" onclick="clickType(this);">비듬성</a></li>
+    <li class="side-item"><a href="#" class="side-item" onclick="clickType(this);">염증성</a></li>
+    <li class="side-item"><a href="#" class="side-item" onclick="clickType(this);">탈모성</a></li>
+    <li class="side-item"><a href="#" class="side-item" onclick="clickType(this);">복합성</a></li>
+</ul>
+</nav>
+
+
+<!-- 두피유형별 차트 -->
+<div class="chart-area">
+<table id="양호Table" class="chartTable">
+<tr>
+	<th><h2>양호 유형 그래프</h2></th>
+</tr>
+<tr>
+	<th><canvas id="양호_성별Chart" class="chart" style="width: 273px; height: 273px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="양호_연령Chart" class="chart"></canvas></th>
+	<th><canvas id="양호_샴푸 사용빈도Chart" class="chart"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="양호_펌 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="양호_염색 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="양호_현재 모발상태Chart" class="chart"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="양호_현재 사용중인 제품Chart" class="chart" style="width: 340px; height: 340px; margin-top: 60px; margin-left: 10px;"></canvas></th>
+	<th><canvas id="양호_두피케어 선호여부Chart" class="chart" style="width: 275px; height: 275px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="양호_제품 선택시 고려사항Chart" class="chart" style="width: 340px; height: 340px; margin-top: 60px; margin-left: 10px;"></canvas></th>
+</tr>
+<tr>
+<td colspan="3" style="width: 100px;"><br><br>
+<h2>📢 양호 유형의 특징</h2><br>
+✔ 여성이 50.7% 남성이 49.3%로 양성의 비율이 균등하게 분포되었다는 것을 알 수 있습니다.<br>
+✔ 30대가 28.3%로 가장 많으며 그 뒤로 40대, 20대, 50대 순으로 많았습니다.<br>
+✔ 샴푸 사용 빈도는 1일 1회가 65.8%로로 압도적으로 많고 1일 2회, 2일1회가 뒤를 잇습니다. <br>
+✔ 펌 주기는 하지않음이 42.8%로 가장 많으며 1~3회/연, 4~6회/연가 뒤를 이어 차지합니다. <br>
+✔ 염색 주기는 하지않음이 절반 정도로 가장 많고 그 뒤로 1~3회/연, 4~6회/연 순이었습니다.<br>
+✔ 현재 모발 상태는 염색모발이 48%이고 기타가 48%로 이 두 가지 목록이 가장 많으며, 비율이 같다는 것을 알 수 있습니다.<br>
+✔ 현재 사용하고 있는 두피모발용 제품은 샴푸가 가장 많고 그 뒤로 기타는 23%, 샴푸, 트리트먼트가 17.1%를 차지하고 있습니다.<br>
+✔ 샴푸 구매시 중요하게 여기는 요인은 세정력이 32.2%로 가장 많으며 다음으로 머리결이 21.7%, 헹굼후느낌이 17.8%, 두피자극 17.1%, 향 7.9% 순입니다.
+<td>
+</tr>
+</table>
+
+<table id="건성Table" class="chartTable">
+<tr>
+	<th><h2>건성 유형 그래프</h2></th>
+</tr>
+<tr>
+	<th><canvas id="건성_성별Chart" class="chart" style="width: 273px; height: 273px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="건성_연령Chart" class="chart"></canvas></th>
+	<th><canvas id="건성_샴푸 사용빈도Chart" class="chart"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="건성_펌 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="건성_염색 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="건성_현재 모발상태Chart" class="chart" style="width: 340px; height: 340px; margin-top: 60px;"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="건성_현재 사용중인 제품Chart" class="chart" style="width: 340px; height: 340px; margin-top: 60px;"></canvas></th>
+	<th><canvas id="건성_두피케어 선호여부Chart" class="chart" class="chart" style="width: 275px; height: 275px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="건성_제품 선택시 고려사항Chart" class="chart" style="width: 340px; height: 340px; margin-top: 60px;"></canvas></th>
+</tr>
+<tr>
+<td colspan="3" style="width: 100px;"><br><br>
+<h2>📢 건성 유형의 특징</h2><br>
+✔ 여성이 62.7% 남성이 37.3%로 여성이 더 많이 많습니다.<br>
+✔ 20대가 29.5%로 가장 많으며 그 뒤로 30대 25.6%, 40대 19.0%, 50대 12.4%로 차지하고 있습니다.  <br>
+✔ 샴푸 사용 빈도는 1일 1회가 76.7%로 압도적으로 많고 1일 2회가 16.7%, 2일1회가 6.6%로 뒤를 잇습니다. <br>
+✔ 펌 주기는 하지않음이 가장 많은 49.1%로 민감성과 같고 그 뒤로는 1~3회/연이 36.9%, 4~6회/연이 11.8% 순입니다.<br>
+✔ 염색 주기는 하지않음이 38.8%로 가장 많으며 1~3회/연 24.9%, 4~6회/연 19.8%가 뒤를 이어 차지합니다.<br>
+✔ 현재 모발 상태는 염색모발이 55.5%이고 기타가 38.6%로 염색모발이 가장 많이 차지하고 있음을 알 수 있습니다.<br>
+✔ 현재 사용하고 있는 두피모발용 제품은 샴푸가 28.9%로 가장 많고 그 뒤로 기타는 22.7%, 샴푸, 트리트먼트가 21.0%를 차지하고 있습니다.
+✔ 맞춤두피케어 제품사용을 희망하는 것이 87.2%로  맞춤두피케어 제품사용을 희망하지 않은 것 보다 많습니다.<br>
+✔ 샴푸 구매시 중요하게 여기는 것은 세정력이 35.7%로 가장 많으며 그 뒤로 머리결이 23.7%, 두피자극 20.6%, 향 11.1%, 헹굼후느낌 7.2% 순입니다.<br>
+<td>
+</tr>
+</table>
+
+<table id="지성Table" class="chartTable">
+<tr>
+	<th><h2>지성 유형 그래프</h2></th>
+</tr>
+<tr>
+	<th><canvas id="지성_성별Chart" class="chart" style="width: 272px; height: 272px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="지성_연령Chart" class="chart"></canvas></th>
+	<th><canvas id="지성_샴푸 사용빈도Chart" class="chart"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="지성_펌 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="지성_염색 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="지성_현재 모발상태Chart" class="chart" style="width: 330px; height: 330px; margin-top: 55px;"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="지성_현재 사용중인 제품Chart" class="chart" style="width: 375px; height: 375px; margin-top: 90px;"></canvas></th>
+	<th><canvas id="지성_두피케어 선호여부Chart" class="chart" class="chart" style="width: 275px; height: 275px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="지성_제품 선택시 고려사항Chart" class="chart" style="width: 350px; height: 350px; margin-top: 70px;"></canvas></th>
+</tr>
+<tr>
+<td colspan="3" style="width: 100px;"><br><br>
+<h2>📢 지성 유형의 특징</h2><br>
+✔ 여성이 66.1% 남성이 33.9%로 전체에 비해 여성이 더 많이 차지하고 있습니다.<br>
+✔ 20대가 36.2%로 가장 많으며 그 뒤로 30대 21.6%, 40대 18.1%, 50대 10.7% 순입니다.<br>
+✔ 샴푸 사용 빈도는 1일 1회가 76.9%로 압도적으로 많으며 1일 2회가 15.6%, 2일1회가 7.6%로 뒤를 잇습니다. <br>
+✔ 펌 주기는 하지않음이 55.2%로 가장 많고 1~3회/연이 31.9%, 4~6회/연이 10.5%로 차지합니다. <br>
+✔ 염색 주기는 하지않음이 36.5%로 가장 많으며 그 뒤로  1~3회/연 28.1%, 4~6회/연 18.8%가 뒤를 잇습니다.<br>
+✔ 현재 모발 상태는 염색모발이 59.3%이고 기타가 34.1%로 염색모발이 가장 많이 차지하고 있음을 알 수 있습니다.<br>
+✔ 현재 사용하고 있는 두피모발용 제품은 샴푸가 26.3%로 가장 많고 그 뒤로 기타가 24.8%, 샴푸, 트리트먼트가 18.5%를 차지하고 있습니다.<br>
+✔ 맞춤두피케어 제품사용을 희망하는 것이 83.7%로  맞춤두피케어 제품사용을 희망하지 않은 것 보다 압도적으로 많음을 알 수 있습니다.<br>
+✔ 샴푸 구매시 중요하게 여기는 것은 세정력이 33.6%로 가장 많으며 그 뒤로 머리결이 25.5%, 두피자극 18.9%, 향 11.7%, 헹굼후느낌 7.7%로 전체와 빈도수 순서가 유사합니다.<br>
+<td>
+</tr>
+</table>
+
+<table id="지루성Table" class="chartTable">
+<tr>
+	<th><h2>지루성 유형 그래프</h2></th>
+</tr>
+<tr>
+	<th><canvas id="지루성_성별Chart" class="chart" style="width: 273px; height: 273px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="지루성_연령Chart" class="chart"></canvas></th>
+	<th><canvas id="지루성_샴푸 사용빈도Chart" class="chart"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="지루성_펌 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="지루성_염색 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="지루성_현재 모발상태Chart" class="chart" style="width: 370px; height: 370px; margin-left: 9px; margin-top: 90px;"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="지루성_현재 사용중인 제품Chart" class="chart" style="width: 375px; height: 375px; margin-top: 80px;"></canvas></th>
+	<th><canvas id="지루성_두피케어 선호여부Chart" class="chart" class="chart" style="width: 275px; height: 275px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="지루성_제품 선택시 고려사항Chart" class="chart" style="width: 350px; height: 350px; margin-top: 70px;"></canvas></th>
+</tr>
+<tr>
+<td colspan="3" style="width: 100px;"><br><br>
+<h2>📢 지루성 유형의 특징</h2><br>
+✔ 여성이 56.5% 남성이 43.5%로 여성이 더 많습니다.<br>
+✔ 20대가 34.2%로 가장 많으며 그 뒤로 30대 23.3%, 40대 17.5%, 50대 11.8%로, 10대의 경우 5.8%라는 점과 비교가 됩니다.  <br>
+✔ 샴푸 사용 빈도는 1일 1회가 74.1%로 압도적으로 많고 1일 2회가 17.4%, 2일1회가 8.4%로 뒤를 잇습니다. <br>
+✔ 펌 주기는 하지않음이 53.3%로 가장 많으며 1~3회/연이 33.5%, 4~6회/연이 10.7%로 뒤를 잇습니다. <br>
+✔ 염색 주기는 하지않음이 42.2%로 가장 많으며 그 뒤로  1~3회/연 23.9%, 4~6회/연이 17%가 뒤를 잇습니다.<br>
+✔ 현재 모발 상태는 염색모발이 52.9%이고 기타가 41.5%로 염색모발이 가장 많이 차지하고 있음을 알 수 있습니다.<br>
+✔ 현재 사용하고 있는 두피모발용 제품은 샴푸가 32.1%로 가장 많고 그 뒤로 원 그래프에 나와있는 7개를 제외한 나머지인 기타는 24%, 샴푸, 트리트먼트가 15.3%를 차지하고 있습니다.<br>
+✔ 맞춤두피케어 제품사용을 희망하는 것이 85.9%로  맞춤두피케어 제품사용을 희망하지 않은 것 보다 압도적으로 많음습니다.<br>
+✔ 샴푸 구매시 중요하게 여기는 것은 세정력이 36.6%로 가장 많으며 그 뒤로 머리결 21.4%, 두피자극 20.4% 향 8.9%, 헹굼후느낌 8.2% 순입니다.<br>
+<td>
+</tr>
+</table>
+
+<table id="민감성Table" class="chartTable">
+<tr>
+	<th><h2>민감성 유형 그래프</h2></th>
+</tr>
+<tr>
+	<th><canvas id="민감성_성별Chart" class="chart" style="width: 273px; height: 273px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="민감성_연령Chart" class="chart"></canvas></th>
+	<th><canvas id="민감성_샴푸 사용빈도Chart" class="chart"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="민감성_펌 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="민감성_염색 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="민감성_현재 모발상태Chart" class="chart" style="width: 370px; height: 370px; margin-left: 9px; margin-top: 90px;"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="민감성_현재 사용중인 제품Chart" class="chart" style="width: 340px; height: 340px; margin-top: 60px;"></canvas></th>
+	<th><canvas id="민감성_두피케어 선호여부Chart" class="chart" class="chart" style="width: 275px; height: 275px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="민감성_제품 선택시 고려사항Chart" class="chart" style="width: 340px; height: 340px; margin-top: 55px;"></canvas></th>
+</tr>
+<tr>
+<td colspan="3" style="width: 100px;"><br><br>
+<h2>📢 민감성 유형의 특징</h2><br>
+✔ 남성이 52.9% 여성이 47.1%로 남성이 여성보다 많습니다.<br>
+✔ 20대가 26.6%로 가장 많으며 그 뒤로 30대 25.6%, 40대 20.5%, 50대 13.2%로, 전체와 같은 순서로 분포가 차지하고 있습니다.<br>
+✔ 샴푸 사용 빈도는 1일 1회가 70.5%로 압도적으로 많고 1일 2회가 24.1%, 2일1회가 5.4%로 뒤를 잇습니다. <br>
+✔ 펌 주기는 하지않음이 49.1%로 건성과 같고 가장 많으며 1~3회/연이 32.3%, 4~6회/연이 15.1%로 뒤이어 차지합니다. <br>
+✔ 염색 주기는 하지않음이 48.0%로 가장 많으며 그 뒤로  1~3회/연 21.1%, 7회이상/연 16.1% 순입니다.<br>
+✔ 현재 모발 상태는 염색모발이 48.7%이고 기타가 46.2%로 염색모발이 가장 많이 차지하고 있음을 알 수 있습니다.<br>
+✔ 현재 사용하고 있는 두피모발용 제품은 샴푸가 40.3%로 가장 많고 그 뒤로 기타는 19.2%, 샴푸, 트리트먼트가 17.1%를 차지하고 있습니다.<br>
+✔ 맞춤두피케어 제품사용을 희망하는 것이 85.0%로  맞춤두피케어 제품사용을 희망하지 않은 것 보다 압도적으로 많습니다.<br>
+✔ 샴푸 구매시 중요하게 여기는 것은 세정력이 38.8%로 가장 많으며 그 뒤로 두피자극이 21.9%, 머리결 20.4%, 향 8.9%, 헹굼후느낌 8.2% 순입니다.
+<td>
+</tr>
+</table>
+
+<table id="비듬성Table" class="chartTable">
+<tr>
+	<th><h2>비듬성 유형 그래프</h2></th>
+</tr>
+<tr>
+	<th><canvas id="비듬성_성별Chart" class="chart" style="width: 273px; height: 273px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="비듬성_연령Chart" class="chart"></canvas></th>
+	<th><canvas id="비듬성_샴푸 사용빈도Chart" class="chart"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="비듬성_펌 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="비듬성_염색 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="비듬성_현재 모발상태Chart" class="chart" style="width: 370px; height: 370px; margin-left: 9px; margin-top: 90px;"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="비듬성_현재 사용중인 제품Chart" class="chart" style="width: 375px; height: 375px; margin-top: 90px;"></canvas></th>
+	<th><canvas id="비듬성_두피케어 선호여부Chart" class="chart" class="chart" style="width: 275px; height: 275px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="비듬성_제품 선택시 고려사항Chart" class="chart" style="width: 340px; height: 340px; margin-top: 70px;"></canvas></th>
+</tr>
+<tr>
+<td colspan="3" style="width: 100px;"><br><br>
+<h2>📢 비듬성 유형의 특징</h2><br>
+✔ 성비는 여성이 남성보다 2.6배 정도 높습니다.<br>
+✔ 연령은 전체빈도 비슷하게 20대 39.2%로 가장 많고, 이어 30대 20.4%, 40대 13.3% 순으로 있습니다. 전체빈도와 다른점은 50대와 10대의 빈도 크기가 역전되어 10대가 더 높습니다<br>
+✔ 샴푸빈도는 전체빈도와 유사하게 1일1회 77.8%로 가장 높고 그 외 1일2회 12%, 2일 1회 10.1% 순으로 빈도크기가 정해졌습니다.<br>
+✔ 펌주기는 전체 펌주기와 동일하게 하지않음이 53.3%인 절반을 차지하고 그다음은  1~3회/연 36.9% 입니다. 특징적으로는 비듬성 펌주기비율이 1~3회/연 가 전체 펌주기비율 보다 조금더 높은 비율을 가지고 있습니다.<br>
+✔ 염색 주기는 하지않음이 39.2%로 가장 많으며 그 뒤로 1~3회/연 29.4%, 4~6회/연이 16.4%가 뒤를 잇습니다.<br>
+✔ 현재 모발 상태는 염색모발이 55.2%이고 기타가 38.5%로 염색모발이 가장 많이 차지하고 있음을 알 수 있습니다.<br>
+✔ 현재 사용하고 있는 두피모발용 제품은 샴푸가 25.6%로 가장 많고 그 뒤로 원 그래프에 나와있는 7개를 제외한 나머지인 기타는 25.4%, 샴푸, 트리트먼트가 17.3%를 차지하고 있으며 특징적인것은 샴푸의 비중이 비듬성은 전체와 비교했을때 11.3% 적은 비율을 가지고 있습니다<br>
+✔ 맞춤두피케어 제품사용을 희망하는 것이 86.3%로  맞춤두피케어 제품사용을 희망하지 않은 것 보다 압도적으로 많음을 알 수가 있습니다.<br>
+✔ 샴푸 구매시 중요하게 여기는 것은 세정력이 32.8%로 가장 많으며 그 뒤로 머리결 24.2%, 두피자극 16.9%, 향 16.3% 헹굼후 느낌 7.4%로 알 수가 있다. 이는 전체와 순서과 유사합니다.
+<td>
+</tr>
+</table>
+
+<table id="염증성Table" class="chartTable">
+<tr>
+	<th><h2>염증성 유형 그래프</h2></th>
+</tr>
+<tr>
+	<th><canvas id="염증성_성별Chart" class="chart" style="width: 273px; height: 273px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="염증성_연령Chart" class="chart"></canvas></th>
+	<th><canvas id="염증성_샴푸 사용빈도Chart" class="chart"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="염증성_펌 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="염증성_염색 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="염증성_현재 모발상태Chart" class="chart" style="width: 330px; height: 330px; margin-top: 55px;"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="염증성_현재 사용중인 제품Chart" class="chart" style="width: 353px; height: 353px; margin-top: 80px;"></canvas></th>
+	<th><canvas id="염증성_두피케어 선호여부Chart" class="chart" class="chart" style="width: 275px; height: 275px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="염증성_제품 선택시 고려사항Chart" class="chart" style="width: 341px; height: 341px; margin-top: 60px;"></canvas></th>
+</tr>
+<tr>
+<td colspan="3" style="width: 100px;"><br><br>
+<h2>📢 염증성 유형의 특징</h2><br>
+✔ 남성이 56.5% 여성이 43.5%로 남성이 더 높은 수치인 것을 알 수 있습니다. 지루성과 수치가 같습니다.<br>
+✔ 20대가 29%로 가장 많으며 그 뒤로 30대 23.4%, 40대 21%, 50대 10.7%로, 10대의 경우 5.6%라는 점과 비교가 됩니다.  <br>
+✔ 샴푸 사용 빈도는 1일 1회가 76.2%로 압도적으로 많고 1일 2회가 17.3%, 2일1회가 6.5%로 뒤를 잇습니다. <br>
+✔ 펌 주기는 하지않음이 55.6%로 가장 많으며 1~3회/연이 29.9%, 4~6회/연이 11.7%로 뒤를 잇습니다. <br>
+✔ 염색✔ 음이 50%로 가장 많으며 그 뒤로  1~3회/연 23.8%, 7회이상/연이 14.5%가 뒤를 잇습니다. 이는 전체와 비교했을 때 4~6회/연과 7회이상/연의 순서가 바뀌었다는 것을 알 수가 있습니다.<br>
+✔ 현재 모발 상태는 염색모발이 50.5%이고 기타가 44.9%로 염색모발이 가장 많이 차지하고 있습니다.<br>
+✔ 현재 사용하고 있는 두피모발용 제품은 샴푸가 42.5%로 가장 많고 타 두피유형 비율과 비교해봤을 때 가장 높은 수치입니다. 그리고 그 뒤로 원 그래프에 나와있는 7개를 제외한 나머지인 기타는 20.1%, 샴푸, 트리트먼트가 12.6%를 차지하고 있습니다.<br>
+✔ 맞춤두피케어 제품사용을 희망하는 것이 85.5%로  맞춤두피케어 제품사용을 희망하지 않은 것 보다 압도적으로 많습니다.<br>
+✔ 샴푸 구매시 중요하게 여기는 것은 두피자극이 31.8%로 가장 많으며 그 뒤로 세정력 29%, 머리결 17.3%, 향 12.6% 헹굼후 느낌 6.5%로 순입니다.. 두피자극이 가장 많은 부분을 차지합니다.
+<td>
+</tr>
+</table>
+
+
+<table id="탈모성Table" class="chartTable">
+<tr>
+	<th><h2>탈모성 유형 그래프</h2></th>
+</tr>
+<tr>
+	<th><canvas id="탈모성_성별Chart" class="chart" style="width: 273px; height: 273px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="탈모성_연령Chart" class="chart"></canvas></th>
+	<th><canvas id="탈모성_샴푸 사용빈도Chart" class="chart"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="탈모성_펌 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="탈모성_염색 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="탈모성_현재 모발상태Chart" class="chart" style="width: 330px; height: 330px; margin-top: 55px;"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="탈모성_현재 사용중인 제품Chart" class="chart" style="width: 370px; height: 370px; margin-top: 90px;"></canvas></th>
+	<th><canvas id="탈모성_두피케어 선호여부Chart" class="chart" style="width: 275px; height: 275px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="탈모성_제품 선택시 고려사항Chart" class="chart" style="width: 340px; height: 340px; margin-top: 70px;"></canvas></th>
+</tr>
+<tr>
+<td colspan="3" style="width: 100px;"><br><br>
+<h2>📢 탈모성 유형의 특징</h2><br>
+✔ 성비는 여성이 64.2% 남성이 35.8%로 여성의 비율이 더 높습니다.<br>
+✔ 30~50대까지가 주축이 되어 전체의 75퍼센트를 차지하고 있다. 20대는 12.8%로 낮은 비율을 차지합니다. <br>
+✔ 샴푸빈도는 전체빈도와 유사하게 1일1회 75.5%로 가장 높고 그 외 2일1회 13.2%, 1일 2회 11.3% 순으로 빈도크기가 정해졌습니다. 이는 전체와 비교했을 때 1일 2회와 2일 1회의 순서가 바뀌었다는 것을 의미합니다. <br>
+✔ 펌주기는 하지않음이 45.3%로 가장 크지만, 과반을 넘기지는 않았습니다. 특징적으로 4~6회/연이 30.2%로 두번째로 높슾니다.<br>
+✔ 염색주기는 하지않음이 39.6%로 가장 크고, 특징적으로 다른 유형과 다르게 4~6회가 28.3%, 7회이상이 18.9% 1~3회가 13.2%입니다.. <br>
+✔ 현재모발상태는 염색모발이 52.8%로 과반을 차지했습니다.<br>
+✔ 현재 두피모발용 사용제품으로는 샴푸가 47.7%로 가장 높았고 이는 다른 두피 타입들보다 더 높은 비율을 차지합니다. <br>
+✔ 맞춤케어제품사용을 희망하는 비율이 90.6%로 압도적으로 높슾니다.<br>
+✔ 샴푸 구매시 중요 고려사항은 세정력 41.5%, 머리결 24.5%, 두피자극 22.6% 순이며. 세정력의 비율이 전체의 세정력 비율보다 더 높은 것이 특징입니다. <br>
+<td>
+</tr>
+</table>
+
+<table id="복합성Table" class="chartTable">
+<tr>
+	<th><h2>복합성 유형 그래프</h2></th>
+</tr>
+<tr>
+	<th><canvas id="복합성_성별Chart" class="chart" style="width: 273px; height: 273px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="복합성_연령Chart" class="chart"></canvas></th>
+	<th><canvas id="복합성_샴푸 사용빈도Chart" class="chart"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="복합성_펌 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="복합성_염색 주기Chart" class="chart"></canvas></th>
+	<th><canvas id="복합성_현재 모발상태Chart" class="chart" style="width: 375px; height: 375px; margin-left: 9px; margin-top: 95px;"></canvas></th>
+</tr>
+<tr>
+	<th><canvas id="복합성_현재 사용중인 제품Chart" class="chart" style="width: 375px; height: 375px; margin-top: 85px;"></canvas></th>
+	<th><canvas id="복합성_두피케어 선호여부Chart" class="chart" class="chart" style="width: 275px; height: 275px; margin-top: 0px;"></canvas></th>
+	<th><canvas id="복합성_제품 선택시 고려사항Chart" class="chart" style="width: 340px; height: 340px; margin-top: 60px;"></canvas></th>
+</tr>
+<tr>
+<td colspan="3" style="width: 100px;"><br><br>
+<h2>📢 복합성 유형의 특징</h2><br>
+✔ 남성보다 여성의 비율이 14% 높습니다.<br>
+✔ 연령은 20대가 29.2%로 가장 높은 비율을 차지하나 30대~60대까지는 비교적 균등하게 분포합니다.<br>
+✔ 샴푸의 이용빈도는 1일 1회가 73.5%로 가장 높고 그 다음은 17.3%인 1일 2회입니다.<br>
+✔ 펌은 하지 않는 사람이 각각 54.3%로 가장 많았습니다.<br>
+✔ 염색 주기는 하지않음이 41.7%로 가장 많았습니다.<br>
+✔ 현재의 모발상태는 염색모발인 경우가 54%로 가장 많습니다.<br>
+✔ 사용 중인 헤어제품은 샴푸 단독사용이 34.9%로 가장 높고 그 다음은 샴푸와 트리트먼트 사용, 샴푸와 린스 순입니다.<br>
+✔ 맞춤케어제품사용을 희망하는 비율이 87.9%로 압도적으로 높습니다.<br>
+✔ 샴푸 구매시 중요시 고려하는 부분으로 세정력 36.5%, 두피자극 23.6%, 머리결 20.2% 뽑혔습니다.
+<td>
+</tr>
+</table>
+
+<table id="전체Table" class="chartTable selected" style="display: block;">
+<tr>
+	<th><h2>성별 두피유형</h2></th>
+</tr>
+<tr>
+	<th><canvas id="남성_두피유형Chart" style="width: 500px; height: 500px; margin: 30px;"></canvas></th>
+	<th><canvas id="여성_두피유형Chart" style="width: 500px; height: 500px; margin: 30px;"></canvas></th>
+</tr>
+<tr>
+	<th colspan="2"><h2>성별 제품 선택시 중요시하는 요인</h2></th>
+</tr>
+<tr>
+	<th colspan="2"><canvas id="성별_제품 선택시 고려사항Chart"></canvas></th>
+<tr>
+<tr>
+	<th><br><h2>두피유형별 제품 선택시 중요시하는 요인</h2></th>
+</tr>
+<tr>
+<th colspan="2"><img style="width: 1000px; height: 500px" src="static/images/choice_bytype.png"></th>
+</tr>
+<tr>
+	<th><br><h2>연령별 두피유형</h2></th>
+</tr>
+<tr>
+<th colspan="2"><img style="width: 1000px; height: 500px" src="static/images/type_byage.png"></th>
+</tr>
+<tr>
+	<th><br><h2>성별에 따른 염색 주기</h2></th>
+</tr>
+<tr>
+<th colspan="2"><img style="width: 650px; height: 700px;" src="static/images/dye_bysex.png"></th>
+</tr>
+<tr>
+	<th><br><h2>연령에 따른 맞춤 두피케어 선호 여부</h2></th>
+</tr>
+<tr>
+<th colspan="2"><img style="width: 1100px; height: 500px" src="static/images/care_byage.png"></th>
+</tr>
+
+<tr>
+	<th><br><h2>맞춤 두피케어 선호 여부에 따른 샴푸 선택시 중요 요인</h2></th>
+</tr>
+<tr>
+<th colspan="2"><img style="width: 650px; height: 700px" src="static/images/choice_bycare.png"></th>
+</tr>
+
+</table>
+
+</div>
+<script>
+//두피유형별 파이차트
+let chartDatas = JSON.parse("{{ pie_json|escapejs }}");
+//console.log(Object.keys(chartDatas))
+for(k in chartDatas){
+	//console.log(k);
+	for(kk in chartDatas[k]){
+		//console.log(kk);
+		let arg = document.getElementById(k+"_"+kk+"Chart").getContext("2d");
+		new Chart(arg, {
+		    type: "pie",
+		    data: chartDatas[k][kk],
+		    options: {
+		    	title: {
+		    		display: true,
+		    		text: kk,
+		    		fontSize: 20
+		    	},
+		        responsive: false,
+		        maintainAspectRatio: true,
+		        legend: { 
+		            position: "bottom", 
+			        labels: {
+		                padding: 20,
+		                fontSize: 15
+		            }}
+		    }
+		})
+	}
+}
+
+
+//성별 두피유형 차트
+let typebysexDatas = JSON.parse("{{ type_bysex_json|escapejs }}");
+for(k in typebysexDatas){
+	//alert(k+"_"+"두피유형Chart");
+	let arg = document.getElementById(k+"_"+"두피유형Chart").getContext("2d");
+	new Chart(arg, {
+	    type: "doughnut",
+	    data: typebysexDatas[k],
+	    options: {
+	    	title: {
+	    		display: true,
+		   		text: k,
+	    		fontSize: 20
+		   	},
+		    responsive: false,
+		    maintainAspectRatio: true,
+		    legend: { 
+		        position: "right", 
+			    labels: {
+		            padding: 20,
+		            fontSize: 20
+		  	    }}
+		}
+	})
+}
+
+
+//성별 제품 선택시 고려사항 차트
+let choicebysexDatas = JSON.parse("{{ choice_bysex_json|escapejs }}");
+let arg = document.getElementById("성별_제품 선택시 고려사항Chart").getContext("2d");
+var barOptions_stacked = {
+	    tooltips: {
+	        enabled: false
+	    },
+	    hover :{
+	        animationDuration:0
+	    },
+	    scales: {
+	        xAxes: [{
+	            ticks: {
+	                beginAtZero:true,
+	                fontSize:15
+	            },
+	            scaleLabel:{
+	                display:false
+	            },
+	            gridLines: {
+	            }, 
+	            stacked: true
+	        }],
+	        yAxes: [{
+	            gridLines: {
+	                display:false,
+	                color: "#fff",
+	                zeroLineColor: "#fff",
+	                zeroLineWidth: 0
+	            },
+	            ticks: {
+	                fontFamily: "'Open Sans Bold', sans-serif",
+	                fontSize:11,
+	                max: 120
+	            },
+	            stacked: true
+	        }]
+	    },
+	    legend:{
+	        display:true,
+	        position: "right"
+	    },
+	    
+	    animation: {
+	        onComplete: function () {
+	            var chartInstance = this.chart;
+	            var ctx = chartInstance.ctx;
+	            ctx.textAlign = "left";
+	            ctx.font = "9px Open Sans";
+	            ctx.fillStyle = "#fff";
+
+	            Chart.helpers.each(this.data.datasets.forEach(function (dataset, i) {
+	                var meta = chartInstance.controller.getDatasetMeta(i);
+	                Chart.helpers.each(meta.data.forEach(function (bar, index) {
+	                    data = dataset.data[index];
+	                    if(i==0){
+	                        ctx.fillText(data, 50, bar._model.y+4);
+	                    } else {
+	                        ctx.fillText(data, bar._model.x-25, bar._model.y+4);
+	                    }
+	                }),this)
+	            }),this);
+	        }
+	    },
+	    pointLabelFontFamily : "Quadon Extra Bold",
+	    scaleFontFamily : "Quadon Extra Bold",
+	};
+new Chart(arg, {
+    type: "horizontalBar",
+    data: choicebysexDatas,
+    options: barOptions_stacked,
+})
+</script>
+
+</body>
+</html>

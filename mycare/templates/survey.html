@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+<script src="/static/js/jquery-3.6.0.min"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+    *{
+    font-family: 'Nanum Gothic', sans-serif;
+    }
+
+a.nav-link {
+   font-size: 30px;
+   margin: 0px 20px 0px 20px;
+}
+
+div#navbarNav {
+   margin-left: 80px;
+}
+
+.write-form {
+  width: 70%;
+  margin: 0 auto;
+}
+
+</style>
+<script type="text/javascript">
+function chkFunc(){
+	//alert("a");// a가 나와야정상 
+	if (frm.gender.value =="" || frm.age.value == "" ||  frm.shampoo_count.value == "" || frm.perm.value == "" || frm.color_count.value == ""|| frm.hair_product.value == ""||  frm.product_want.value == ""){
+		alert('입력자료를 모두 채우시오');
+		return;
+	};
+	frm.submit();	
+	
+};
+</script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 100px;">
+  <a class="navbar-brand" href="/main"><img src="/static/images/nurdudle3.png" width="320"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/main">Home<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/imageinput">🔍두피유형찾기</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/survey">설문참여하기</a>
+      <li class="nav-item">
+        <a class="nav-link" href="/statistics">통계페이지</a>
+      <li class="nav-item">
+        <a class="nav-link" href="/healthInform">건강정보</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<!--시작문구-->
+<article class="start"><br><br><br><br><br><br><br><br><br><br><br><br>
+<h1 class="main-title mt-5 text-center"> <b>너의~ 두피 타입이~ 들려 ~</b></h1><br>
+<h2 class="sub-title mt-3 text-center">간단한 설문조사를 통해 <br> 나와 가장 비슷한 두피타입을 알 수 있습니다.</h2>
+
+</article>
+<br><br><br><br><br><br><br><br><br><br>
+
+<form class = "write-form" name  = "frm"  action = "surveyresult" method = "POST">{% csrf_token %}
+
+    <!--시작화면-->
+    <article class="start">
+        <div class="progress mt-5">
+            <div class="progress-bar" role="progressbar" style="width: calc(100/9*1%)"></div>
+        </div><br><br><br><br><br><br>
+        <h1 class="main-title mt-5 text-center">1. 당신의 성별을 체크하세요. </h1><br>
+        <h2 class="sub-title mt-3 text-center">
+        	<input type="radio" name="gender" value="남" >남 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="radio" name="gender" value="여" >여
+    
+        </h2>
+        </div>  <br><br><br><br><br><br>
+    </article>  
+    
+    <article class="start">
+        <div class="progress mt-5">
+            <div class="progress-bar" role="progressbar" style="width: calc(100/9*2%)"></div>
+        </div><br><br><br><br><br><br>
+        <h1 class="main-title mt-5 text-center">2. 당신의 연령대를 체크하세요. </h1><br>
+	        <h2 class="sub-title mt-3 text-center">
+	        	<input type="radio" name="age" value="0대" >0대 &nbsp;
+	        	<input type="radio" name="age" value="10대" >10대&nbsp;
+	        	<input type="radio" name="age" value="20대" >20대&nbsp;
+	        	<input type="radio" name="age" value="30대" >30대&nbsp;
+	        	<input type="radio" name="age" value="40대" >40대&nbsp;
+	        	<input type="radio" name="age" value="50대" >50대&nbsp;
+	        	<input type="radio" name="age" value="60대" >60대&nbsp;
+	        	<input type="radio" name="age" value="70대" >70대&nbsp;
+	        	<input type="radio" name="age" value="80대" >80대&nbsp;
+	        	<input type="radio" name="age" value="90대" >90대&nbsp;
+	        	<input type="radio" name="age" value="100대" >100대&nbsp;
+	        	<input type="radio" name="age" value="110대" >110대&nbsp;
+	        </h2><br><br><br><br><br><br>
+        </div>  
+    </article>
+    <article class="start">
+        <div class="progress mt-5">
+            <div class="progress-bar" role="progressbar" style="width: calc(100/9*3%)"></div>
+        </div><br><br><br><br><br><br>
+        <h1 class="main-title mt-5 text-center">3. 당신의 샴푸 사용 빈도를 체크하세요. </h1><br>
+	        <h2 class="sub-title mt-3 text-center">
+	        	<input type="radio" name="shampoo_count" value="1일 1회" >1일 1회 &nbsp;&nbsp;
+	        	<input type="radio" name="shampoo_count" value="1일 2회" >1일 2회 &nbsp;&nbsp;
+	        	<input type="radio" name="shampoo_count" value="2일 1회" >2일 1회 &nbsp;&nbsp;
+	        </h2><br><br><br><br><br><br>
+        </div>  
+    </article>
+    <article class="start">
+        <div class="progress mt-5">
+            <div class="progress-bar" role="progressbar" style="width: calc(100/9*4%)"></div>
+        </div><br><br><br><br><br><br>
+        <h1 class="main-title mt-5 text-center">4. 당신의 펌 주기를 체크하세요. </h1><br>
+	        <h2 class="sub-title mt-3 text-center">
+	        	<input type="radio" name="perm" value="하지않음" >하지않음 &nbsp;&nbsp;
+	        	<input type="radio" name="perm" value="1~3회/연" >1~3회/연 &nbsp;&nbsp;
+	        	<input type="radio" name="perm" value="4~6회/연 " >4~6회/연 &nbsp;&nbsp;
+	        	<input type="radio" name="perm" value="7회 이상/연 " >7회 이상/연 &nbsp;&nbsp;
+	        </h2><br><br><br><br><br><br>
+        </div>  
+    </article>
+    <article class="start">
+        <div class="progress mt-5">
+            <div class="progress-bar" role="progressbar" style="width: calc(100/9*5%)"></div>
+        </div><br><br><br><br><br><br>
+        <h1 class="main-title mt-5 text-center">5. 당신의 염색 주기 (자가 염색 포함)를 체크하세요. </h1><br>
+	        <h2 class="sub-title mt-3 text-center">
+	        	<input type="radio" name="color_count" value="하지않음" >하지않음 &nbsp;&nbsp;
+	        	<input type="radio" name="color_count" value="1~3회/연" >1~3회/연 &nbsp;&nbsp;
+	        	<input type="radio" name="color_count" value="4~6회/연 " >4~6회/연 &nbsp;&nbsp;
+	        	<input type="radio" name="color_count" value="7회 이상/연 " >7회 이상/연 &nbsp;&nbsp;
+	        </h2><br><br><br><br><br><br>
+        </div>  
+    </article>
+    <article class="start">
+        <div class="progress mt-5">
+            <div class="progress-bar" role="progressbar" style="width: calc(100/9*6%)"></div>
+        </div><br><br><br><br><br><br>
+        <h1 class="main-title mt-5 text-center">6. 당신의 현재 모발 상태를 체크하세요(중복가능) </h1><br>
+	        <h2 class="sub-title mt-3 text-center">
+	        	<input type="checkbox" name="now_hair[ ]" value="현재 모발" >염색모발 &nbsp;&nbsp;
+	        	<input type="checkbox" name="now_hair[ ]" value="가발 사용(붙임머리 포함)" >가발 사용(붙임머리 포함) &nbsp;&nbsp;
+	        	<input type="checkbox" name="now_hair[ ]" value="모발이식/시술" >모발이식/시술 &nbsp;&nbsp;
+	        	<input type="checkbox" name="now_hair[ ]" value="기타" >기타 &nbsp;&nbsp;
+	        </h2><br><br><br><br><br><br>
+        </div>  
+    </article>
+    
+    <article class="start">
+        <div class="progress mt-5">
+            <div class="progress-bar" role="progressbar" style="width: calc(100/9*7%)"></div>
+        </div><br><br><br><br><br><br>
+        <h1 class="main-title mt-5 text-center">7. 당신이 현재 사용하고 있는 두피모발용 제품을 체크하세요(중복가능)</h1><br>
+	        <h2 class="sub-title mt-3 text-center">
+	        	<input type="checkbox" name="hair_product[ ]" value="샴푸" >샴푸 &nbsp; 
+	        	<input type="checkbox" name="hair_product[ ]" value="두피세럼" >두피세럼 &nbsp; 
+	        	<input type="checkbox" name="hair_product[ ]" value="헤어 스타일링제" >헤어 스타일링제 &nbsp; 
+	        	<input type="checkbox" name="hair_product[ ]" value="트리트먼트" >트리트먼트 &nbsp; 
+	        	
+	        	<input type="checkbox" name="hair_product[ ]" value="헤어에센스" >헤어에센스 &nbsp; 
+	        	<input type="checkbox" name="hair_product[ ]" value="린스" >린스 &nbsp;
+	        	<input type="checkbox" name="hair_product[ ]" value="헤어에센스" >두피스케일링제
+	        </h2><br><br><br><br><br><br>
+        </div>  
+    </article>
+    <article class="start">
+        <div class="progress mt-5">
+            <div class="progress-bar" role="progressbar" style="width: calc(100/9*8%)"></div>
+        </div><br><br><br><br><br><br>
+        <h1 class="main-title mt-5 text-center">8. 당신은 맞춤두피케어 제품사용을 희망(선호)하시나요? </h1><br>
+	        <h2 class="sub-title mt-3 text-center">
+	        	<input type="radio" name="product_want" value="예" >예 &nbsp;&nbsp;
+	        	<input type="radio" name="product_want" value="아니오" >아니오 &nbsp;&nbsp;
+	        </h2><br><br><br><br><br><br>
+        </div>  
+    </article>
+    <article class="start">
+        <div class="progress mt-5">
+            <div class="progress-bar" role="progressbar" style="width: calc(100/9*9%)"></div>
+        </div><br><br><br><br><br><br>
+        <h1 class="main-title mt-5 text-center">9. 당신은 샴푸 구매시 중요시 고려하는 부분은 무엇인가요?</h1><br>
+	        <h2 class="sub-title mt-3 text-center">
+	        	<input type="radio" name="shampoo_buy" value="세정력" >세정력 &nbsp;&nbsp;
+	        	<input type="radio" name="shampoo_buy" value="두피자극" >두피자극 &nbsp;&nbsp;
+	        	<input type="radio" name="shampoo_buy" value="머리결" >머리결 &nbsp;&nbsp;
+	        	<input type="radio" name="shampoo_buy" value="향" >향 &nbsp;&nbsp;
+	        	<input type="radio" name="shampoo_buy" value="헹굼후느낌" >헹굼후느낌 &nbsp;&nbsp;
+	        	<input type="radio" name="shampoo_buy" value="가격" >가격 &nbsp;&nbsp;
+	        </h2><br><br><br><br><br><br>
+        </div>  
+    </article>
+    <article class="start">
+        <div class="progress mt-5">
+            <div class="progress-bar" role="progressbar" style="width: calc(100/9*9%)"></div>
+        </div>  
+    </article>
+    <br><br><br><br><br><br>
+        <h1 class="main-title mt-5 text-center">내~ 두피타입이 ~ 뭔데 ~
+        <div class="mid-rectangle"></div><br><br> 
+        <button id="B" type="submit" class="btn-answer btn btn-primary pt-5 pb-5" style="width:20%;" onclick="chkFunc();">전송</button>
+        <div class="rectangle"></div>
+	        </h1><br><br><br><br><br><br>
+        </div>    
+</form>
+</body>
+</html>

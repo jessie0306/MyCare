@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+    *{
+    font-family: 'Nanum Gothic', sans-serif;
+    }   
+
+a.nav-link {
+   font-size: 30px;
+   margin: 0px 20px 0px 20px;
+}
+
+div#navbarNav {
+   margin-left: 80px;
+}
+
+a:link { color:black; }
+a:visited { color:black; }
+a:hover { color:red; }
+a:active { color:green; }  
+a { text-decoration:none; }
+#btn{
+background-color: blue;
+color: white;
+border-width: 0px;
+font-size: 25px;
+position: fixed;
+bottom: 170px;
+right: 900px;
+}
+ 
+#table1{
+background-color: cyan;
+} 
+</style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <style>
+    .photoFrame{
+      width: 500px;
+      height: 500px;
+    }
+    .photoFrame:hover{
+      cursor: pointer;
+    }
+  </style>
+  <title>Document</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 100px;">
+  <a class="navbar-brand" href="/main"><img src="/static/images/nurdudle3.png" width="320"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/main">Home<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+      <li class="nav-item active">
+        <a class="nav-link" href="/imageinput">🔍두피유형찾기</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/survey">설문참여하기</a>
+      <li class="nav-item">
+        <a class="nav-link" href="/statistics">통계페이지</a>
+      <li class="nav-item">
+        <a class="nav-link" href="/healthInform">건강정보</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<form action="imageresult" method="post" name="submit" onsubmit="return false">{% csrf_token %} <!-- onsubmit="return false" : form의 enter 막기 -->
+
+<center>
+
+<br><br>
+
+  <h1>
+    이미지 불러오기
+  </h1><br>
+  <input type="file" id="fileInput" name="fileInput"/>
+  <div id="pictures">
+
+  </div>
+  <input type="button" id='btn' value="결과보기">
+</center>
+</form>
+</body>
+<script>
+window.onload = function(){
+	document.getElementById("btn").onclick = confirmFunc;
+	document.getElementById("btn2").onclick = confirmFunc2;
+}
+  var fileInput = document.getElementById("fileInput");
+  //값이 변경될때 호출 되는 이벤트 리스너
+  fileInput.addEventListener('change',function(e){
+    var file = e.target.files[0]; //선택된 파일
+    var reader = new FileReader();
+    reader.readAsDataURL(file); //파일을 읽는 메서드 
+
+    reader.onload = function(){
+      var photoFrame = document.createElement("div");
+      photoFrame.style = `background : url(${reader.result}); background-size : cover`;
+      photoFrame.className = "photoFrame";
+      document.getElementById("pictures").appendChild(photoFrame);
+    }})
+
+      
+      
+    
+  
+function confirmFunc(){
+	  submit.submit()
+ 	}
+
+</script>
+</html>

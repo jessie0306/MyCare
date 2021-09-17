@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="/static/css/bootstrap.min.css">
+<script src="/static/js/jquery-3.6.0.min"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<style type="text/css">
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+    *{
+    font-family: 'Nanum Gothic', sans-serif;
+    }
+body {
+  position: relative;
+}
+a.nav-link {
+   font-size: 30px;
+   margin: 0px 20px 0px 20px;
+}
+div#navbarNav {
+   margin-left: 80px;
+}
+
+.mydiv {
+
+        border: 1px solid #735e5e;
+
+        height:600px;
+
+        overflow:scroll;
+
+    }
+.write-form {
+  width: 70%;
+  margin: 0 auto;
+}
+</style>
+<script type="text/javascript">
+var scrollSpy = new bootstrap.ScrollSpy(document.body, {
+	  target: '#navbar-example'
+	})
+</script>
+
+
+</head>
+<body  data-bs-spy="scroll" data-bs-target="#navbar-example">
+<nav class="navbar navbar-expand-lg navbar-light bg-light" style="height: 100px;">
+  <a class="navbar-brand" href="main"><img src="/static/images/nurdudle3.png" width="320"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="/main">Home<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/imageinput">🔍두피유형찾기</a>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" href="/survey">설문참여하기</a>
+      <li class="nav-item">
+        <a class="nav-link" href="/statistics">통계페이지</a>
+      <li class="nav-item">
+        <a class="nav-link" href="/healthInform">건강정보</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<article class="start">
+<h1 class="main-title mt-5 text-center"> <b>결과페이지</b></h1><br>
+
+</article><center>
+<nav id="navbar-example2" class="navbar navbar-light bg-light px-3" style="width:90%; " >
+<div style="width:100%;"><br>
+ <h2><b>당신이 선택한</b></h2>
+<br>
+<h4 > 
+<b>1. 성별</b>
+-> {{gender}}
+<br>
+<b>2. 연령대</b>
+-> {{age}}<br>
+<b>3. 샴푸 사용 빈도</b>
+-> {{shampoo_count}}<br>
+<b>4. 펌 주기</b>
+-> {{perm}}<br>
+<b>5. 염색 주기 (자가 염색 포함)</b>
+-> {{color_count}}<br>
+<b>6. 현재 모발 상태</b>
+-> {{now_hair}}<br>
+<b>7. 두피모발용 제품</b>
+-> {{hair_product}}<br>
+<b>8. 맞춤두피케어 제품사용을 희망</b>
+-> {{product_want}}<br>
+<b>9. 샴푸 구매시 고려</b>
+-> {{shampoo_buy}}<br><br><br>
+</h4>
+
+
+</div>
+</nav><br><br>
+<h2><b>당신과 가장 비슷한 타입은 ? 궁금하면 통계정보 누르세요~ </b></h2><br>
+<button type="button" class="btn btn-primary" >
+  <a class="navbar-brand" href="healthInform" style=color:white;>더 자세한 건강정보 클릭 ! </a></button>
+&nbsp;&nbsp;&nbsp;
+<button type="button" class="btn btn-primary" >
+  <a class="navbar-brand" href="statistics" style=color:white;>더 자세한 통계정보 클릭 !</a>
+ </button>
+<br><br><br>
+<h2><b>간단한 전체 타입별 남녀_통계 정보</b></h2>
+<img src = "./static/images/꺽은선_샴푸 사용 빈도_gender.png">
+<img src = "./static/images/자른거2.png">
+<br><br>
+<br><br><br>
+<h2><b>간단한 두피 타입별 건강정보</b></h2><br>
+
+<nav id="navbar-example2" class="navbar navbar-light bg-light px-3" style="width:90%;">
+  <ul class="nav nav-pills" style="padding-left: 100px;">
+    <li class="nav-item" > 
+      <a class="nav-link" href="#scrollspyHeading1">양호</a>
+    </li>
+    <li class="nav-item"> 
+      <a class="nav-link" href="#scrollspyHeading2">건성</a>
+    </li>
+    <li class="nav-item"> 
+      <a class="nav-link" href="#scrollspyHeading3">지성</a>
+    </li>
+    <li class="nav-item"> 
+      <a class="nav-link" href="#scrollspyHeading4">민감성</a>
+    </li>
+    <li class="nav-item"> 
+      <a class="nav-link" href="#scrollspyHeading5">지루성</a>
+    </li>
+    </li>
+    <li class="nav-item" >
+      <a class="nav-link" href="#scrollspyHeading6">염증성</a>
+    </li>
+
+    <li class="nav-item"> 
+      <a class="nav-link" href="#scrollspyHeading7">비듬성</a>
+    </li>
+    <li class="nav-item"> 
+      <a class="nav-link" href="#scrollspyHeading8">탈모성</a>
+    </li>
+    <li class="nav-item"> 
+      <a class="nav-link" href="#scrollspyHeading9">복합성</a>
+    </li><br>
+  </ul>
+</nav>
+
+<div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0"  style="width:80%;" class="scrollspy-example" tabindex="0">
+  <br><h4 id="scrollspyHeading1">양호</h4>
+  <p>특징<br>
+
+1) 두피 표면이 맑은 청백색을 띄며 투명도가 높다.<br>
+
+2) 각질이 없어 깨끗하며 모공이 완전히 열려 있다. <br>
+
+3) 한 개의 모공에 2~3개의 모발이 건강하게 자리잡고 있으며, 모발의 굵기가 일정하다.<br>
+
+4) 각질이나 이물질이 없고, 맑은 상태를 유지하며 빈 모공도 거의 보이지 않는다.<br>
+</p>
+  <h4 id="scrollspyHeading2">건성</h4>
+  <p>특징<br>
+
+1) 유,수분이 제거되거나 증발, 건조한 상태, 윤기가 없고 각질이 쌓인다.<br>
+
+2) 각화된 표피가 제때 떨어져 나가지 못해 모공을 막고 있는 경우이며, 모발이 가늘어지며 두피 표면이 거칠다.
+<br>
+3) 군데군데 각질 비듬이 보이며, 모공 주위에 유,수분이 없고 많이 함몰되어 있다.
+<br>
+4) 피지막이 없어 손상 받기 쉽고, 염증이 생기기 쉽다.
+<br>
+5) 2~3일 머리를 감지 않아도 두피에 기름 때가 확인되지 않는다.<br></p>
+  <h4 id="scrollspyHeading3">지성</h4>
+  <p>특징
+<br>
+1) 과다한 피지로 인해 모공에 물이 고여 있는 것처럼 보인다.
+<br>
+2) 두꺼운 각질층과 두피에 투명감이 없어 둔탁한 상태이다.
+<br>
+3) 비듬과 가려움증을 동반할 가능성이 높다.
+<br>
+4) 피지 과다분비로 모낭 안으로 피지가 역류하여 지루성 탈모가 발생할 확률이 높다.
+<br>
+5) 심한 악취를 동반하며 모발의 탄력도 저하를 유발할 수 있다.
+<br></p>
+  <h4 id="scrollspyHeading4">민감성</h4>
+  <p>특징
+<br>
+1) 세균의 감염, 두피의 불결 (곰팡이, 박테리아, 바이러스)
+<br>
+2) 염증 발생, 과도한 피지로 인한 트러블이 나타나는 상태
+<br>
+3) 화학적 자극과 과음이 원인일 확률이 높다.
+<br>
+4) 붉은 밤점이나 뾰루지, 가는 실핏줄, 홍반 및 출혈이 확인된다.
+<br>
+5) 영양 상태 불균형시 과립층 부위 저항력이 약화 된다.
+<br>
+6) 약한 자극이나 압력에 두피 주변이 붉게 변한다.
+<br></p>
+  <h4 id="scrollspyHeading5">지루성</h4>
+  <p>
+특징
+<br>
+1) 비듬과 피지가 과다하게 분비되어 염증이 생기는 유형이다.
+<br>
+2) 예민성 두피와 지성 두피의 혼합형이다.
+<br>
+3) 두피 이외의 피부인 얼굴 등에도 피부 병변을 동반하는 지루 피부염으로 발전될 수 있다.
+<br>
+4) 여자 보다 남자에게서 조금 더 많이 발생되며, 피부가 기름진 사람에게 호발하는 경향이 있다.
+<br></p>
+  <h4 id="scrollspyHeading6">염증성</h4>
+  <p>특징
+<br>
+1) 명확히 확인된 원인이 없이 다양하게 발생한다.
+<br>
+2) 피지의 과다 분비, 환경적 요인, 면역기능의 저하, 스트레스 등등 원인이 매우 다양하다.
+<br>
+3) 홍반과 비듬이 흔하게 나타나며, 40~70세 사이에서 나타나기 쉽다.
+<br>
+4) 성인 남성에게서 더 흔하게 나타난다.
+<br></p>
+  <h4 id="scrollspyHeading7">비듬성</h4>
+  <p>특징
+<br>
+1) 두피에 가늘고 마른 겨 같은 인설이 생기며 가려움을 유발한다.
+<br>
+2) 피지선의 과다 분비, 호르몬 불균형, 두피 세포의 과다 증식 등의 원인에 의해 일어난다.
+<br>
+3) 요인이 다양하며 특히 호르몬 불균형, 두피 불청결, 스트레스 등으로 비듬균의 증식으로 인해 발생한다.
+<br>
+4) 심한 경우 두꺼운 인설, 홍반, 진물이 나기도 한다.
+<br></p>
+  <h4 id="scrollspyHeading8">탈모성</h4>
+  <p>특징
+<br>
+1) 호르몬, 유전에 의해 발생하는 경우가 많다.
+<br>
+2) 탈모 = 모발 공장에서 제조가 중지된 것과 같다.
+<br>
+3) 모세포의 힘이 약해 모발의 성장기가 짧다.
+<br>
+4) 모발이 굵었더라도, 쉽게 가늘어짐과 동시에 모주기가 짧아진다.
+<br></p>
+    <h4 id="scrollspyHeading9">복합성</h4>
+  <p>특징 
+<br>
+위에 해당하는 유형별 해당 증상이 복합적으로 나타날 경우, 병원에서 상담을 받는 것이 좋다. 
+<br>
+두피 건강에 영향을 끼치는 요인은 매우 다양하기 때문에 관리로 극복할 수도 있지만 어느정도 증상이 발현된 뒤에는 
+<br>
+치료가 늦을수록 호전이 어려워지는 경우가 많기 때문에 1주일 이상 증상을 겪었다면 늦기 전에 조기에 진료를 받아
+<br>
+건강한 두피와 모발을 꾸준히 유지하는 것이 가장 좋다.
+<br></p>
+
+</div>
+</center>
+</body>
+</html>
